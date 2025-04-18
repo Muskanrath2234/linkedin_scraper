@@ -88,26 +88,56 @@ class Scraper:
         self.WAIT_FOR_ELEMENT_TIMEOUT = 5
         self.TOP_CARD = "pv-top-card"
 
-    def _get_driver(self):
-        options = webdriver.ChromeOptions()
-        options.add_argument("--headless")  # Run in headless mode for server
-        options.add_argument("--no-sandbox")
-        options.add_argument("--disable-dev-shm-usage")
-        options.add_argument("--start-maximized")
-        options.add_argument("--disable-blink-features=AutomationControlled")
-        options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        options.add_experimental_option('useAutomationExtension', False)
+    # def _get_driver(self):
+    #     options = webdriver.ChromeOptions()
+    #     options.add_argument("--headless")  # Run in headless mode for server
+    #     options.add_argument("--no-sandbox")
+    #     options.add_argument("--disable-dev-shm-usage")
+    #     options.add_argument("--start-maximized")
+    #     options.add_argument("--disable-blink-features=AutomationControlled")
+    #     options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    #     options.add_experimental_option('useAutomationExtension', False)
 
-        try:
-            # Check if CHROMEDRIVER env var is set, otherwise use hardcoded path,replace with your chrome path
-            driver_path = os.getenv("CHROMEDRIVER", "C:/Users/DELL/Downloads/chromedriver-win64/chromedriver.exe")
+    #     try:
+    #         # Check if CHROMEDRIVER env var is set, otherwise use hardcoded path,replace with your chrome path
+    #         driver_path = os.getenv("CHROMEDRIVER", "C:/Users/DELL/Downloads/chromedriver-win64/chromedriver.exe")
 
-            # Use Service object as per latest Selenium standards
-            service = Service(driver_path)
-            return webdriver.Chrome(service=service, options=options)
-        except Exception as e:
-            print(f"[Error] Failed to initialize Chrome WebDriver: {e}")
-            raise
+    #         # Use Service object as per latest Selenium standards
+    #         service = Service(driver_path)
+    #         return webdriver.Chrome(service=service, options=options)
+    #     except Exception as e:
+    #         print(f"[Error] Failed to initialize Chrome WebDriver: {e}")
+    #         raise
+#automaticly handle chrome
+  import chromedriver_autoinstaller
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+
+def _get_driver(self):
+    options = webdriver.ChromeOptions()
+    options.add_argument("--headless")  # Headless mode for server environments
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--start-maximized")
+    options.add_argument("--disable-blink-features=AutomationControlled")
+    options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    options.add_experimental_option('useAutomationExtension', False)
+
+    try:
+        # Automatically installs and sets up the appropriate chromedriver
+        driver_path = chromedriver_autoinstaller.install()
+
+        # Create a Service object with the installed chromedriver path
+        service = Service(driver_path)
+
+        # Initialize Chrome WebDriver with service and options
+        driver = webdriver.Chrome(service=service, options=options)
+        return driver
+
+    except Exception as e:
+        print(f"[Error] Failed to initialize Chrome WebDriver: {e}")
+        raise
+
 
     @staticmethod
     def wait(duration):
