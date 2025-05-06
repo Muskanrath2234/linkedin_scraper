@@ -8,8 +8,8 @@ This is a FastAPI-based REST API to scrape LinkedIn posts based on a search keyw
 
 ### 1. Clone Repository & Navigate to Folder
 ```bash
-git clone https://github.com/Muskanrath2234/linkedin-post-scraper.git
-cd linkedin-post-scraper
+git clone https://github.com/Muskanrath2234/linkedin_scraper.git
+cd linkedin-scraper
 
 
 2. Install Requirements
